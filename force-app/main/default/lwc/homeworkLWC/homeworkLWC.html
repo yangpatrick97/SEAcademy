@@ -1,0 +1,16 @@
+<template>
+<lightning-card>
+<h2 class="slds-text-heading_medium slds-m-bottom_medium">
+    Email Generator
+</h2>
+
+<div class="slds-p-around_medium lgc-bg">
+<lightning-input type="text" label="To:" onchange={handleInputChange} name="toAddress"></lightning-input>
+<lightning-input type="text" label="Subject" onchange={handleInputChange} name="subject"></lightning-input>
+<lightning-input-rich-text value={myVal} onchange={handleInputChange} name="body"></lightning-input-rich-text>
+    <lightning-formatted-rich-text value={myVal}></lightning-formatted-rich-text>
+<lightning-button variant="brand" label="Send" onclick={handleSendButtonClick} class="slds-float_right slds-p-top_small"></lightning-button>
+</div>
+
+</lightning-card>
+</template>
