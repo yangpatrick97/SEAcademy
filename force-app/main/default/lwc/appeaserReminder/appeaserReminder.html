@@ -1,0 +1,63 @@
+<template>
+    <lightning-card>
+        <div class="slds-p-around_medium lgc-bg">
+            <h2 class="slds-text-heading_medium slds-m-bottom_medium">
+            Do or die (Reminders)
+            </h2>
+            <lightning-datatable
+                    key-field="id"
+                    data={data}
+                    columns={columns}
+                    hide-checkbox-column="true">
+            </lightning-datatable>
+            <div class="slds-float_right">
+            <lightning-button variant="brand-outline"
+                    label="New Reminder"
+                    title="Open Modal"
+                    onclick={customShowModalPopup}
+                    class="slds-m-left_x-small ">
+            </lightning-button>
+        </div>
+ 
+<!-- modal start -->        
+<template if:true={customFormModal}>
+ 
+<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+<div class="slds-modal__container">
+    <!-- modal header start -->
+    <header class="slds-modal__header">
+        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={customHideModalPopup}>
+            <lightning-icon icon-name="utility:close"
+            alternative-text="close"
+            variant="inverse"
+            size="small" ></lightning-icon>
+            <span class="slds-assistive-text">Close</span>
+        </button>
+        <h2 class="slds-text-heading_medium slds-hyphenate">Custom Modal Popup in LWC</h2>
+    </header>
+    <!-- modal body start -->
+    <div class="slds-modal__content slds-p-around_medium">
+ 
+    <div class="slds-grid slds-wrap">
+        <div class="slds-col slds-size_6-of-12 slds-p-horizontal--medium slds-m-bottom_medium">
+            <lightning-input label="Subject"></lightning-input>
+        </div>
+<div class="slds-col slds-size_6-of-12 slds-p-horizontal--medium slds-m-bottom_medium">
+            <lightning-input label="Due Date" ></lightning-input>
+        </div>
+        </div>
+</div>
+<!-- modal footer start-->
+    <footer class="slds-modal__footer">
+        <button class="slds-button slds-button--destructive" onclick={customHideModalPopup}>Cancel</button>
+        <button class="slds-button slds-button_brand">Save</button>
+    </footer>
+</div>
+</div>
+</section>
+<div class="slds-backdrop slds-backdrop_open">
+</div>
+</template>
+</div>
+    </lightning-card>
+</template>
