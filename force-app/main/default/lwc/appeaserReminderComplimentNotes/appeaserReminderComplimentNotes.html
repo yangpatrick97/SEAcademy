@@ -1,0 +1,51 @@
+<template>
+    
+    <lightning-card>
+        <div class="slds-p-around_medium lgc-bg">
+            <h2 class="slds-text-heading_medium slds-m-bottom_medium">
+            Do or die (Reminders)
+            </h2>
+            <lightning-datatable
+                    key-field="id"
+                    data={data}
+                    columns={columns}
+                    hide-checkbox-column="true">
+            </lightning-datatable>
+            <div class="slds-p-around_medium lgc-bg">
+            <lightning-button 
+                    variant="brand" 
+                    label="New reminder" 
+                    onclick={handleButtonClick} 
+                    class="slds-float_right slds-p-top_small">
+            </lightning-button>
+        </div>
+        </div>
+    </lightning-card>
+
+    <lightning-card>
+        <div class="slds-p-around_medium lgc-bg">
+            <h2 class="slds-text-heading_medium slds-m-bottom_medium">
+            Girlfriend 101
+            </h2>
+        <lightning-input-rich-text
+            value={myVal}
+            onchange={handleChange}>
+        </lightning-input-rich-text>
+    
+        <lightning-formatted-rich-text value={myVal}></lightning-formatted-rich-text>
+        </div>
+    </lightning-card>
+    <lightning-card>
+        <div class="slds-size_1-of-2 slds-p-around_medium slds-align_absolute-center">
+            <div class="slds-box slds-box_x-small slds-text-align_center slds-m-around_x-small">
+        <lightning-button 
+                    variant="brand" 
+                    label="Compliment of the Day" 
+                    onclick={randomcomp}>
+        </lightning-button>
+        <div class="blanktext">{randomText}</div>
+        <img id="blankimage" src={randomImage} alt="" width="400px" height="400px"/>
+    </div>
+    </div>
+    </lightning-card>
+</template>

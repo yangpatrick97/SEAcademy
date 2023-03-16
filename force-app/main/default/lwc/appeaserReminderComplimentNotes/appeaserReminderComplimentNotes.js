@@ -3,19 +3,16 @@ import { LightningElement, api } from 'lwc';
 const columns = [
     { label: 'Subject', fieldName: 'name' },
     { label: 'Due Date', fieldName: 'dueDate', type: 'date' },
-    { label: 'Remind?', fieldName: 'remind', type: 'checkbox' },
+    /*{ label: 'Remind?', fieldName: 'remind', type: 'boolean' },*/
 ];
 
-export default class homeworkLWC2 extends LightningElement {
-    activeSectionMessage = '';
-
-    handleToggleSection(event) {
-        this.activeSectionMessage =
-            'Movie Suggestion Category:  ' + event.detail.openSections;
-    }
-//Task Reminder:
+export default class AppeaserReminderComplimentNotes extends LightningElement {
+    @api valueFromParentComponent;
+    //Task Reminder:
     data = [];
     columns = columns;
+    randomText = '';
+    randomImage = '';
     //need to make a function for {onclick} to save new reminders to the table
 //Compliment generator:
     sentence = [
@@ -43,22 +40,61 @@ export default class homeworkLWC2 extends LightningElement {
         "https://i.pinimg.com/originals/af/14/f5/af14f5687f4359b0a19867e6886a8f7c.jpg"
       ];
       
-      text = document.querySelector("blanktext");
-      f2() {
+      
+      setRandomText() {
+        console.log(1);
         var randomnumber = Math.floor(Math.random() * 10);
-        console.log(randomnumber);
-        text.innerHTML = sentence[randomnumber];
+        var compliment = this.sentence[randomnumber];
+        console.log(compliment);
+        this.randomText = compliment;
+        // textElement.innerHTML += compliment;
+        //alert(compliment);
       }
       
-      pics = document.querySelector("blankimage");
-      f1() {
+      setRandomPic() {
+        console.log(2);
         var randomnumber = Math.floor(Math.random() * 10);
-        console.log(randomnumber);
-        var chosenpicture = pictures[randomnumber];
-        pics.src = chosenpicture;
+        this.randomImage = this.pictures[randomnumber];
+        console.log(this.randomImage);
       }
+
       randomcomp() {
-        f2();
-        f1();
+        this.setRandomText();
+        this.setRandomPic();
+        
       }
+      
+      /**
+       * Case: The datatable should also retrieve tasks when it renders.
+       * 
+       * Solution: 
+       * 1. Set up Columns to mirror task field api names
+       * 2. Create an apex class with a method that returns a List of Tasks
+       * 3. import that method into lwc and call it from the connectedCallback()
+       * 4. set this.data = the response of the apex method in the JS
+       */
+
+
+      /**
+       * Case: I want to push a button and create a task in Salesforce and push it to the datatable. 
+       * 
+       * Solution: 
+       * 1. It should call a function that creates a task and push it to this.data
+       *    var task = {
+          name: `Name (${index})`,
+          website: 'www.salesforce.com',
+          amount: Math.floor(Math.random() * 100),
+          phone: `${Math.floor(Math.random() * 9000000000) + 1000000000}`,
+          closeAt: new Date(
+              Date.now() + 86400000 * Math.ceil(Math.random() * 20)
+          ),
+        };
+        this.data.push(task);
+      
+       * 0.8. Create another method in apex class that takes values and creates a task and inserts into database
+       * 0.9. Import method into JS
+       * 2. Call method from Javascript and send task field values as parameters
+       * 3. Display a toast message 
+       */
+
 }
