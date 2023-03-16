@@ -1,23 +1,10 @@
 import { LightningElement, api } from 'lwc';
 
-const columns = [
-    { label: 'Subject', fieldName: 'name' },
-    { label: 'Due Date', fieldName: 'dueDate', type: 'date' },
-    { label: 'Remind?', fieldName: 'remind', type: 'checkbox' },
-];
+export default class AppeaserCompliment extends LightningElement {
+    @api valueFromParentComponent;
 
-export default class homeworkLWC2 extends LightningElement {
-    activeSectionMessage = '';
-
-    handleToggleSection(event) {
-        this.activeSectionMessage =
-            'Movie Suggestion Category:  ' + event.detail.openSections;
-    }
-//Task Reminder:
-    data = [];
-    columns = columns;
-    //need to make a function for {onclick} to save new reminders to the table
-//Compliment generator:
+    randomText = '';
+    randomImage = '';
     sentence = [
         "I Hope You Are Doing Well Today!",
         "You're pretty cool B).",
@@ -43,22 +30,28 @@ export default class homeworkLWC2 extends LightningElement {
         "https://i.pinimg.com/originals/af/14/f5/af14f5687f4359b0a19867e6886a8f7c.jpg"
       ];
       
-      text = document.querySelector("blanktext");
-      f2() {
+      
+      setRandomText() {
+        console.log(1);
         var randomnumber = Math.floor(Math.random() * 10);
-        console.log(randomnumber);
-        text.innerHTML = sentence[randomnumber];
+        var compliment = this.sentence[randomnumber];
+        console.log(compliment);
+        this.randomText = compliment;
+        // textElement.innerHTML += compliment;
+        //alert(compliment);
       }
       
-      pics = document.querySelector("blankimage");
-      f1() {
+      setRandomPic() {
+        console.log(2);
         var randomnumber = Math.floor(Math.random() * 10);
-        console.log(randomnumber);
-        var chosenpicture = pictures[randomnumber];
-        pics.src = chosenpicture;
+        this.randomImage = this.pictures[randomnumber];
+        console.log(this.randomImage);
       }
+
       randomcomp() {
-        f2();
-        f1();
+        this.setRandomText();
+        this.setRandomPic();
+        
       }
+
 }
