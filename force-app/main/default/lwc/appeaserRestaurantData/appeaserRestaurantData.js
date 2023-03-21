@@ -1,28 +1,42 @@
 import { LightningElement, api } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-//import findRestaurants from '@salesforce/apex/RestaurantRecs.findRestaurants';
+import findRestaurants from '@salesforce/apex/RestaurantRecs.findRestaurants';
+/*import NAME_FIELD from '@salesforce/schema/restaurant.name';
+import CUISINE_FIELD from '@salesforce/schema/restaurant.cuisine';
+import PRICE_FIELD from '@salesforce/schema/restaurant.price';
+import RATING_FIELD from '@salesforce/schema/restaurant.rating';
+import PHONE_FIELD from '@salesforce/schema/restaurant.phone';
+import PREFERRED_CUISINE_FIELD from '@salesforce/schema/contact.preferredcuisinefield'
+*/
 
 const data = [
-    { id: 1, name: 'Chipotle', rating: 4.0, phone: '212-575-8424' },
-    { id: 2, name: 'Chick-fil-A', rating: 5.0, phone: '718-504-6528' },
-    { id: 3, name: 'Popeyes', rating: 4.5, phone: '917-475-1546' },
-    { id: 4, name: 'Starbucks', rating: 3.7, phone: '212-221-7515' },    
+    { id: 1, name: 'Chipotle', cuisine: 'Fast Food', price: '$', rating: 4.0, phone: '212-575-8424' },
+    { id: 2, name: 'Chick-fil-A', cuisine: 'Fast Food', price: '$', rating: 5.0, phone: '718-504-6528' },
+    { id: 3, name: 'Popeyes', cuisine: 'Fast Food', price: '$', rating: 4.5, phone: '917-475-1546' },
+    { id: 4, name: 'Starbucks', cuisine: 'Dessert', price: '$', rating: 3.7, phone: '212-221-7515' },    
 ];
 
 const columns = [
     { label: 'Restaurant', fieldName: 'name' },
+    { label: 'Cuisine', fieldName: 'cuisine', type: 'string' },
     {
         label: 'Rating',
         fieldName: 'rating',
         type: 'number',
         sortable: true,
         cellAttributes: { alignment: 'left' },
-    },
-    { label: 'Phone', fieldName: 'phone', type: 'number' },
-
+    },    
+    { label: 'Price', fieldName: 'price', type: 'string', sortable: true, cellAttributes: { alignment: 'left'  },  },      
+    { label: 'Phone', fieldName: 'phone', type: 'string' },
 ];
 
 export default class DemoApp extends LightningElement {
+
+    name
+    cuisine
+    price
+    rating
+    phone
     @api valueFromParentComponent;
     data = data;
     columns = columns;
@@ -55,5 +69,30 @@ export default class DemoApp extends LightningElement {
         this.data = cloneData;
         this.sortDirection = sortDirection;
         this.sortedBy = sortedBy;
+    }
+    clickForMoreRestaurants() {
+    findRestaurants({
+        data : this.data,
+        name : this.name,
+        cuisine : this.cuisine,
+        price : this.price,
+        rating : this.rating,
+        phone : this.phone
+    }
+
+        
+    )
+    var table = $('#example').DataTable();
+    var newRow = [
+        data,
+        name,
+        cuisine,
+        price,
+        rating,
+        phone
+      ];
+    table.row.add(newRow).draw();   
+                
+      
     }
 }

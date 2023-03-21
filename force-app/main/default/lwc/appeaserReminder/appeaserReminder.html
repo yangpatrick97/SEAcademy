@@ -26,44 +26,22 @@
 <div class="slds-modal__container">
     <!-- modal header start -->
     <header class="slds-modal__header">
-        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={customHideModalPopup}>
-            <lightning-icon icon-name="utility:close"
-            alternative-text="close"
-            variant="inverse"
-            size="small" ></lightning-icon>
-            <span class="slds-assistive-text">Close</span>
-        </button>
-        <h2 class="slds-text-heading_medium slds-hyphenate">New Reminder</h2>
+        <h2 class="slds-text-heading_medium slxds-hyphenate">New Reminder</h2>
     </header>
-   <!-- modal body start
-    <div class="slds-modal__content slds-p-around_medium">
- 
-    <div class="slds-grid slds-wrap">
-        <div class="slds-col slds-size_6-of-12 slds-p-horizontal--medium slds-m-bottom_medium">
-            <lightning-input label="Subject"></lightning-input>
-        </div>
-<div class="slds-col slds-size_6-of-12 slds-p-horizontal--medium slds-m-bottom_medium">
-            <lightning-input label="Due Date" ></lightning-input>
-        </div>
-        </div>
-</div> -->
-<!-- modal footer start
-    <footer class="slds-modal__footer"> -->
+   <!-- modal body start -->
         <div class="slds-modal__content slds-p-around_medium">
             <div class="slds-p-bottom_large slds-p-left_large" style="width:500px">
                 <lightning-record-edit-form object-api-name="Campaign">
-                    <lightning-messages></lightning-messages>
-                    <lightning-input-field label="Subject" field-name="Name"> </lightning-input-field>
-                    <lightning-input-field label="Due Date" field-name="EndDate"> </lightning-input-field>
-                <lightning-button-group>
-              <lightning-button label="Cancel" variant="neutral" onclick={handleDialogClose}></lightning-button>
-              <lightning-button label="Save &amp; New" variant="neutral" type="submit" onclick={handleSaveAndNew}> </lightning-button>
-              <lightning-button label="Save" variant="brand" type="submit" onclick={handleSave}></lightning-button>
-            </lightning-button-group>
-          </lightning-record-edit-form>
-          </div>
-        <!-- <button class="slds-button slds-button--destructive" onclick={customHideModalPopup}>Cancel</button>
-        <button class="slds-button slds-button_brand">Save</button> -->
+                            <lightning-messages></lightning-messages>
+                            <lightning-input-field label="Subject" field-name="Name"> </lightning-input-field>
+                            <lightning-input-field label="Due Date" field-name="EndDate"> </lightning-input-field>
+                        <lightning-button-group>
+                            <lightning-button label="Cancel" variant="neutral" onclick={customHideModalPopup}></lightning-button>
+                            <lightning-button label="Save &amp; New" variant="neutral" type="submit" onclick={handleSaveAndNew}> </lightning-button>
+                            <lightning-button label="Save" variant="brand" type="submit" onclick={handleSave}></lightning-button>
+                        </lightning-button-group>
+                </lightning-record-edit-form>
+            </div>
 </div>
 </div>
 </section>
