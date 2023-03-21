@@ -33,9 +33,9 @@
             size="small" ></lightning-icon>
             <span class="slds-assistive-text">Close</span>
         </button>
-        <h2 class="slds-text-heading_medium slds-hyphenate">Custom Modal Popup in LWC</h2>
+        <h2 class="slds-text-heading_medium slds-hyphenate">New Reminder</h2>
     </header>
-    <!-- modal body start -->
+   <!-- modal body start
     <div class="slds-modal__content slds-p-around_medium">
  
     <div class="slds-grid slds-wrap">
@@ -46,12 +46,24 @@
             <lightning-input label="Due Date" ></lightning-input>
         </div>
         </div>
-</div>
-<!-- modal footer start-->
-    <footer class="slds-modal__footer">
-        <button class="slds-button slds-button--destructive" onclick={customHideModalPopup}>Cancel</button>
-        <button class="slds-button slds-button_brand">Save</button>
-    </footer>
+</div> -->
+<!-- modal footer start
+    <footer class="slds-modal__footer"> -->
+        <div class="slds-modal__content slds-p-around_medium">
+            <div class="slds-p-bottom_large slds-p-left_large" style="width:500px">
+                <lightning-record-edit-form object-api-name="Campaign">
+                    <lightning-messages></lightning-messages>
+                    <lightning-input-field label="Subject" field-name="Name"> </lightning-input-field>
+                    <lightning-input-field label="Due Date" field-name="EndDate"> </lightning-input-field>
+                <lightning-button-group>
+              <lightning-button label="Cancel" variant="neutral" onclick={handleDialogClose}></lightning-button>
+              <lightning-button label="Save &amp; New" variant="neutral" type="submit" onclick={handleSaveAndNew}> </lightning-button>
+              <lightning-button label="Save" variant="brand" type="submit" onclick={handleSave}></lightning-button>
+            </lightning-button-group>
+          </lightning-record-edit-form>
+          </div>
+        <!-- <button class="slds-button slds-button--destructive" onclick={customHideModalPopup}>Cancel</button>
+        <button class="slds-button slds-button_brand">Save</button> -->
 </div>
 </div>
 </section>

@@ -1,12 +1,12 @@
 public with sharing class reminderController {
 
-        @AuraEnabled
-        public static List<String> taskDataTableLookUp() {
+        @AuraEnabled(cacheable=true)
+        public static List<Campaign> getTaskData() {
             try { 
-                List<Task> taskDataTable = [SELECT Description, ActivityDate FROM Task
+                return [
+                    SELECT Name, EndDate 
+                    FROM Campaign
                 ];
-                return taskDataTable;
-                
             } catch (Exception e) {
                 throw new AuraHandledException(e.getMessage());
             }
