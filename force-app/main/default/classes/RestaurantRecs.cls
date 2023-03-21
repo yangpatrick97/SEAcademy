@@ -1,11 +1,19 @@
-public with sharing class RestaurantRecs {}
-/*
+public with sharing class RestaurantRecs {
+
     @AuraEnabled
-    public static string findRestaurants(){
-        try {List<Contact> restaurants = [SELECT Name, Cuisine__c, Rating__c, Address__c 
-                                         FROM Restaurant 
-                                         WHERE ];
-            System.debug(restaurants); 
+    //public static string? data
+    public static void findRestaurants(string preferredCuisine){
+        try {List<Restaurant__c> myRestaurants = new List<Restaurant__c>([
+            SELECT Name, Cuisine_Type__c, Rating__c, Phone_Number__c, Price__c 
+            FROM Restaurant__c    
+                                    //placeholder for 'preferredCuisine'                                    
+            WHERE (Cuisine_Type__c = 'Thai')             
+            LIMIT 20]);
+            
+            
+            System.debug(myRestaurants); 
+           
+        //return data;
         } catch (Exception e) {
             throw new AuraHandledException(e.getMessage());
         }
@@ -13,5 +21,4 @@ public with sharing class RestaurantRecs {}
     
 
     }
-}
-*/
+
