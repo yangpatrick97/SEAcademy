@@ -1,6 +1,6 @@
-public with sharing class reminderController {
+public with sharing class reminderController {}
 
-        @AuraEnabled
+       /* @AuraEnabled
         public static List<String> taskDataTableLookUp() {
             try { 
                 List<Task> taskDataTable = [SELECT Description, ActivityDate FROM Task
@@ -11,4 +11,4 @@ public with sharing class reminderController {
                 throw new AuraHandledException(e.getMessage());
             }
         }
-    }
+    }*/
