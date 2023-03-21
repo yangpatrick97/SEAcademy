@@ -19,13 +19,11 @@ const data = [
 const columns = [
     { label: 'Restaurant', fieldName: 'name' },
     { label: 'Cuisine', fieldName: 'cuisine', type: 'string' },
-    {
-        label: 'Rating',
-        fieldName: 'rating',
-        type: 'number',
-        sortable: true,
-        cellAttributes: { alignment: 'left' },
-    },    
+    { label: 'Rating',
+      fieldName: 'rating',
+      type: 'number',
+      sortable: true,
+      cellAttributes: { alignment: 'left' }, },    
     { label: 'Price', fieldName: 'price', type: 'string', sortable: true, cellAttributes: { alignment: 'left'  },  },      
     { label: 'Phone', fieldName: 'phone', type: 'string' },
 ];
@@ -43,8 +41,8 @@ export default class DemoApp extends LightningElement {
     defaultSortDirection = 'asc';
     sortDirection = 'asc';
     sortedBy;
-
-    // Used to sort the 'Age' column
+   
+    //sort the numerical fields
     sortBy(field, reverse, primer) {
         const key = primer
             ? function (x) {
@@ -72,7 +70,7 @@ export default class DemoApp extends LightningElement {
     }
     clickForMoreRestaurants() {
     findRestaurants({
-        data : this.data,
+        //data : this.data,
         name : this.name,
         cuisine : this.cuisine,
         price : this.price,
@@ -82,15 +80,15 @@ export default class DemoApp extends LightningElement {
 
         
     )
-    var table = $('#example').DataTable();
+    var table = $('restaurantTable').DataTable();
     var newRow = [
-        data,
-        name,
-        cuisine,
-        price,
-        rating,
-        phone
-      ];
+       //this.data,
+        this.name,
+        this.cuisine,
+        this.price,
+        this.rating,
+        this.phone
+    ];
     table.row.add(newRow).draw();   
                 
       
