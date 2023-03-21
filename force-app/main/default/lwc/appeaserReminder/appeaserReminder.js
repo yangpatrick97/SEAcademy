@@ -86,11 +86,11 @@ export default class AppeaserReminder extends LightningElement {
 
     handleRecordSave() {
         this.template.querySelector('lightning-record-edit-form').submit(this.fields);
-        this.customHideModalPopup();
+        this.customHideModalPopup()
         //refreshApex(this.getTaskData); *NOT WORKING FIGURE OUT REFRESH UPON SAVE
-        then(result => {
+        .then(result => {
             if(result){
-                this.showNotification('success', 'Success Message', '');
+                this.showNotification();
             }
         })
         .catch(error => {
@@ -99,12 +99,12 @@ export default class AppeaserReminder extends LightningElement {
     }
 
     showNotification() {
-        const evt = new ShowToastEvent({
-            title: "Success!",
-            message: "Reminder is Saved",
-            variant: success,
+        const toastEvent = new ShowToastEvent({
+            title: 'Success!',
+            message: 'Reminder is Saved',
+            variant: 'success',
         });
-        this.dispatchEvent(evt);
+        this.dispatchEvent(toastEvent);
     }
 }
 /**
