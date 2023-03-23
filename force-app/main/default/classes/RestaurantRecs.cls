@@ -21,7 +21,7 @@ public with sharing class RestaurantRecs {
     
     @AuraEnabled
     public static Contact selectYourGirlfriend(string girlfriendFirstName, String girlfriendLastName) {
-        Contact myGirlfriend = [SELECT Id
+        Contact myGirlfriend = [SELECT FirstName, LastName, preferred_Cuisine__c
                                 FROM Contact
                                 WHERE ((firstName = :girlfriendFirstName) AND (lastName = :girlfriendLastName))];
 
