@@ -134,14 +134,14 @@ export default class myModal extends LightningElement {
     };
 
     addRow() {
-        restaurantData.push({
+        this.restaurantData.push({
             name: this.name,
              cuisine: this.cuisine,
              price: this.price,
              rating: this.rating,
              phone: this.phone
         });
-    console.log(restaurantData)}    
+    console.log(this.restaurantData)}    
     // var table = $('#restaurantTable').DataTable();
     // if (this.name && this.cuisine && this.price && this.rating && this.phone) {
     // var newRow = {
