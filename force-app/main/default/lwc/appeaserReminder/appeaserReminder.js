@@ -1,6 +1,8 @@
 import { LightningElement, api, wire, track } from 'lwc';
 import getTaskData from '@salesforce/apex/reminderController.getTaskData';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { deleteRecord } from 'lightning/uiRecordApi';
+import { refreshApex } from '@salesforce/apex';
 
 const columns = [
     { label: 'Subject', fieldName: 'Name' },
@@ -17,10 +19,11 @@ export default class AppeaserReminder extends LightningElement {
     wiredTasks({ error, data }) {
         if (data) {
             let fixeddata = [];
-            data.forEach((row) =>{
+            data.forEach((row) => {
                 let dataline = {};
                 dataline.Name = row.Name;
                 dataline.EndDate = row.EndDate;
+                dataline.recordId = row.Id;
 
                 fixeddata.push(dataline);
                 console.log(fixeddata);
@@ -70,7 +73,7 @@ export default class AppeaserReminder extends LightningElement {
  
     handleDelete() {
         this.reminderSelectedRows.map(reminder => {
-            deleteRecord(reminder.Id);
+            deleteRecord(reminder.recordId);
         });
     }
 }
