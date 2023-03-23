@@ -4,15 +4,15 @@ import findRestaurants from '@salesforce/apex/RestaurantRecs.findRestaurants';
 import RESTAURANT_OBJECT from '@salesforce/schema/Restaurant__c';
 import { refreshApex } from '@salesforce/apex';
 import LightningModal from 'lightning/modal';
+import selectYourGirlfriend from '@salesforce/apex/RestaurantRecs.selectYourGirlfriend';
 
+import NAME_FIELD from '@salesforce/schema/Restaurant__c.Name';
+import CUISINE_FIELD from '@salesforce/schema/Restaurant__c.Cuisine_Type__c';
+import PRICE_FIELD from '@salesforce/schema/Restaurant__c.Price__c';
+import RATING_FIELD from '@salesforce/schema/Restaurant__c.Rating__c';
+import PHONE_FIELD from '@salesforce/schema/Restaurant__c.Phone_Number__c';
+import PREFERRED_CUISINE_FIELD from '@salesforce/schema/Contact.Preferred_Cuisine__c'
 
-/*import NAME_FIELD from '@salesforce/schema/restaurant.name';
-import CUISINE_FIELD from '@salesforce/schema/restaurant.cuisine';
-import PRICE_FIELD from '@salesforce/schema/restaurant.price';
-import RATING_FIELD from '@salesforce/schema/restaurant.rating';
-import PHONE_FIELD from '@salesforce/schema/restaurant.phone';
-import PREFERRED_CUISINE_FIELD from '@salesforce/schema/contact.preferredcuisinefield'
-*/
 
 
 
@@ -38,6 +38,8 @@ const columns = [
 
 export default class myModal extends LightningElement {
 
+    firstName;
+    lastName;
     name;
             //placeholder
     cuisine = 'Thai';
@@ -45,7 +47,7 @@ export default class myModal extends LightningElement {
     rating;
     phone;
     @api valueFromParentComponent;
-    data = data;
+    restaurantData = data;
     columns = columns;
     defaultSortDirection = 'asc';
     sortDirection = 'asc';
@@ -56,11 +58,20 @@ export default class myModal extends LightningElement {
         this.selectedOption = event.detail.value;
     }
 
+    
     closeModal() {
         this.dispatchEvent(new CustomEvent('close'));
     }
    
     customFormModal = false;
+
+    options = [ 
+        {label: 'Tori Tong', value: 'option1'},
+        {label: 'Riana Chen', value: 'option2'},
+        {label: '#foreveralone', value: 'option3'}
+    ];
+    selectedOption = '';
+
     customShowModalPopup() {
         this.customFormModal = true;
     }
@@ -68,6 +79,11 @@ export default class myModal extends LightningElement {
     customHideModalPopup() {
 
         this.customFormModal = false;
+        selectYourGirlfriend({
+
+            girlfriendFirstName : this.FirstName,
+            girlfriendLastName : this.LastName
+        })
     }
     //sort the numerical fields
     sortBy(field, reverse, primer) {
@@ -96,35 +112,36 @@ export default class myModal extends LightningElement {
         this.sortedBy = sortedBy;
     }
 
-    selectYourGirl() {}
+    
 
 
     clickForMoreRestaurants() {
-    findRestaurants({
-        
-        preferredCuisine : this.cuisine
+        findRestaurants({ preferredCuisine: this.cuisine })
+            .then((result) => {
+                this.data = result;
+            })
+            .catch((error) => {
+                // Handle any errors
+            });
     }
-
-        
-    )
    
-    wiredData({ error, data }); {
-    if (data) {
-        this.data = data;
+    wiredData({ error, restaurantData }) {
+    if (restaurantData) {
+        this.data = restaurantData;
     } else if (error) {
         // Handle error
     }
     };
 
-    addRow(); {
-        this.data.push({
+    addRow() {
+        this.restaurantData.push({
             name: this.name,
              cuisine: this.cuisine,
              price: this.price,
              rating: this.rating,
              phone: this.phone
         });
-    }    
+    console.log(this.restaurantData)}    
     // var table = $('#restaurantTable').DataTable();
     // if (this.name && this.cuisine && this.price && this.rating && this.phone) {
     // var newRow = {
@@ -144,4 +161,3 @@ export default class myModal extends LightningElement {
     // }            
       
     }
-}
