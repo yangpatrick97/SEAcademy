@@ -1,26 +1,90 @@
-import { LightningElement, api, track } from 'lwc';
-//import apex class
+import { LightningElement, api, wire, track } from 'lwc';
+import getTaskData from '@salesforce/apex/reminderController.getTaskData';
+
 const columns = [
-    { label: 'Subject', fieldName: 'name' },
-    { label: 'Due Date', fieldName: 'dueDate', type: 'date' },
+    { label: 'Subject', fieldName: 'Name' },
+    { label: 'Due Date', fieldName: 'EndDate', type: 'date' },
     /*{ label: 'Remind?', fieldName: 'remind', type: 'boolean' },*/
 ];
 export default class AppeaserReminder extends LightningElement {
     @api valueFromParentComponent;
 
-    data = [this.name='Make reservation', this.dueDate='3/17/22'];
-    columns = columns;
-    @track customFormModal = false; 
-    
+    @track data = [];
+    @track columns = columns;
+    //https://salesforce.stackexchange.com/questions/355193/how-do-i-display-field-values-from-a-related-objects-in-my-lightning-data-table
+    @wire(getTaskData)
+    wiredTasks({ error, data }) {
+        if (data) {
+            let fixeddata = [];
+            data.forEach((row) =>{
+                let dataline = {};
+                dataline.Name = row.Name;
+                dataline.EndDate = row.EndDate;
+
+                fixeddata.push(dataline);
+                console.log(fixeddata);
+            })
+            this.data = fixeddata;
+            this.error = undefined;
+
+        } else if (error) {
+            this.error = error;
+            this.contacts = undefined;
+        }
+    }
+    @track customFormModal = false;
     customShowModalPopup() {            
         this.customFormModal = true;
     }
- 
+  
     customHideModalPopup() {    
         
         this.customFormModal = false;
     }
-   
+  
+//pushing tasks to salesforce 
+saveAndNew = false;
+
+handleSave() {
+  this.saveAndNew = false;
+  this.handleRecordSave();
+}
+
+handleSaveAndNew() {
+  this.saveAndNew = true;
+  this.handleRecordSave();
+}
+
+handleReset(event) {
+  const inputFields = this.template.querySelectorAll(
+    'lightning-input-field'
+  );
+  if (inputFields) {
+    inputFields.forEach(field => {
+      field.reset();
+    });
+  }
+}
+
+handleSuccess() {
+  if(this.saveAndNew) {
+    this.handleReset();
+  } else{
+    this[NavigationMixin.Navigate]({
+      type: 'standard__recordPage',
+      attributes: {
+        recordId: this.activityId,
+        objectApiName: 'GRA_RV_Rig_Verification__c',
+        actionName: 'view'
+      },
+    });
+  }
+}
+
+handleRecordSave() {
+  this.template.querySelector('lightning-record-edit-form').submit(this.fields);
+  console.log('worked');
+}
 }
 /**
        * Case: The datatable should also retrieve tasks when it renders.
