@@ -5,49 +5,51 @@
             Do or die (Reminders)
             </h2>
             <lightning-datatable
-                    key-field="id"
-                    data={data}
-                    columns={columns}
-                    hide-checkbox-column="true">
+                key-field="id"
+                data={data}
+                columns={columns}
+                onrowselection={handleRowSelection}>
             </lightning-datatable>
-            <div class="slds-float_right">
-            <lightning-button variant="brand-outline"
-                    label="New Reminder"
-                    title="Open Modal"
-                    onclick={customShowModalPopup}
-                    class="slds-m-left_x-small ">
+        <div class="slds-float_right">
+            <lightning-button 
+                variant="brand-outline"
+                label="Delete Selected"
+                onclick={handleDelete}
+                class="slds-m-left_x-small ">
+            </lightning-button>
+            <lightning-button 
+                variant="brand-outline"
+                label="New Reminder"
+                onclick={customShowModalPopup}
+                class="slds-m-left_x-small ">
             </lightning-button>
         </div>
  
 <!-- modal start -->        
-<template if:true={customFormModal}>
- 
-<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
-<div class="slds-modal__container">
-    <!-- modal header start -->
-    <header class="slds-modal__header">
-        <h2 class="slds-text-heading_medium slxds-hyphenate">New Reminder</h2>
-    </header>
-   <!-- modal body start -->
-        <div class="slds-modal__content slds-p-around_medium">
-            <div class="slds-p-bottom_large slds-p-left_large" style="width:500px">
-                <lightning-record-edit-form object-api-name="Campaign">
-                            <lightning-messages></lightning-messages>
-                            <lightning-input-field label="Subject" field-name="Name"> </lightning-input-field>
-                            <lightning-input-field label="Due Date" field-name="EndDate"> </lightning-input-field>
-                        <lightning-button-group>
-                            <lightning-button label="Cancel" variant="neutral" onclick={customHideModalPopup}></lightning-button>
-                            <lightning-button label="Save &amp; New" variant="neutral" type="submit" onclick={handleSaveAndNew}> </lightning-button>
-                            <lightning-button label="Save" variant="brand" type="submit" onclick={handleSave}></lightning-button>
-                        </lightning-button-group>
-                </lightning-record-edit-form>
-            </div>
-</div>
-</div>
-</section>
-<div class="slds-backdrop slds-backdrop_open">
-</div>
-</template>
-</div>
+            <template if:true={customFormModal}>
+                <div class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container">
+                        <div class="slds-modal__header">
+                            <h2 class="slds-text-heading_medium">New Reminder</h2>
+                        </div>
+                        <div class="slds-modal__content slds-p-around_medium">
+                            <div class="slds-p-bottom_large slds-p-left_large" style="width:500px">
+                                <lightning-record-edit-form object-api-name="Campaign">
+                                            <lightning-messages></lightning-messages>
+                                            <lightning-input-field label="Subject" field-name="Name"> </lightning-input-field>
+                                            <lightning-input-field label="Due Date" field-name="EndDate"> </lightning-input-field>
+                                        <lightning-button-group>
+                                            <lightning-button label="Cancel" variant="neutral" onclick={customHideModalPopup}></lightning-button>
+                                            <lightning-button label="Save" variant="brand" type="submit" onclick={handleSave}></lightning-button>
+                                        </lightning-button-group>
+                                </lightning-record-edit-form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </template>
+        </div>
     </lightning-card>
 </template>
+
