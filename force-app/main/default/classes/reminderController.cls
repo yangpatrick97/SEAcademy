@@ -4,7 +4,7 @@ public with sharing class reminderController {
         public static List<Campaign> getTaskData() {
             try { 
                 return [
-                    SELECT Name, EndDate 
+                    SELECT Name, EndDate, Id
                     FROM Campaign
                 ];
             } catch (Exception e) {

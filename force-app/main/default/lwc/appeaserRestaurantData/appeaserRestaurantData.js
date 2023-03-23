@@ -159,7 +159,4 @@ export default class myModal extends LightningElement {
     // } else {
     // console.log("Error: One or more required values are missing.");
     // }            
-      
     }
-
-

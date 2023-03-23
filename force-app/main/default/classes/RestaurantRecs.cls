@@ -31,4 +31,3 @@ public with sharing class RestaurantRecs {
     }
 
     }
-
