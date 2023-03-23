@@ -6,12 +6,12 @@ import { refreshApex } from '@salesforce/apex';
 import LightningModal from 'lightning/modal';
 import selectYourGirlfriend from '@salesforce/apex/RestaurantRecs.selectYourGirlfriend';
 
-import NAME_FIELD from '@salesforce/schema/Restaurant__c.Name';
-import CUISINE_FIELD from '@salesforce/schema/Restaurant__c.Cuisine_Type__c';
-import PRICE_FIELD from '@salesforce/schema/Restaurant__c.Price__c';
-import RATING_FIELD from '@salesforce/schema/Restaurant__c.Rating__c';
-import PHONE_FIELD from '@salesforce/schema/Restaurant__c.Phone_Number__c';
-import PREFERRED_CUISINE_FIELD from '@salesforce/schema/Contact.Preferred_Cuisine__c'
+import NAME_FIELD from '@salesforce/schema/Restaurant__c.name';
+import CUISINE_FIELD from '@salesforce/schema/Restaurant__c.cuisine_Type__c';
+import PRICE_FIELD from '@salesforce/schema/Restaurant__c.price__c';
+import RATING_FIELD from '@salesforce/schema/Restaurant__c.rating__c';
+import PHONE_FIELD from '@salesforce/schema/Restaurant__c.phone_Number__c';
+import PREFERRED_CUISINE_FIELD from '@salesforce/schema/contact.preferred_Cuisine__c'
 
 
 
@@ -159,5 +159,4 @@ export default class myModal extends LightningElement {
     // } else {
     // console.log("Error: One or more required values are missing.");
     // }            
-      
     }
