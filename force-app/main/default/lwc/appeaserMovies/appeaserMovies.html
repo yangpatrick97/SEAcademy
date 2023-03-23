@@ -5,8 +5,8 @@
         <div class="slds-p-around_medium">
         <lightning-accordion class="example-accordion"
                              onsectiontoggle={handleToggleSection}
-                             active-section-name="B">
-
+                             active-section-name={activeSections}
+                             allow-multiple-sections-open>
             <lightning-accordion-section name="Make your girl swoon" label="Cheesy Romance">               
                 <p>Titanic</p>
                 <p>The Notebook</p>
