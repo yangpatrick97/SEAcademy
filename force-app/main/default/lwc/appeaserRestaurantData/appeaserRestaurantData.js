@@ -5,53 +5,96 @@ import RESTAURANT_OBJECT from '@salesforce/schema/Restaurant__c';
 import { refreshApex } from '@salesforce/apex';
 import LightningModal from 'lightning/modal';
 import selectYourGirlfriend from '@salesforce/apex/RestaurantRecs.selectYourGirlfriend';
-
-import NAME_FIELD from '@salesforce/schema/Restaurant__c.name';
-import CUISINE_FIELD from '@salesforce/schema/Restaurant__c.cuisine_Type__c';
-import PRICE_FIELD from '@salesforce/schema/Restaurant__c.price__c';
-import RATING_FIELD from '@salesforce/schema/Restaurant__c.rating__c';
-import PHONE_FIELD from '@salesforce/schema/Restaurant__c.phone_Number__c';
-import PREFERRED_CUISINE_FIELD from '@salesforce/schema/contact.preferred_Cuisine__c'
+import { getRecords } from 'lightning/uiRecordApi';
+import NAME_FIELD from '@salesforce/schema/Contact.Name';
+import PREFERRED_CUISINE_FIELD from '@salesforce/schema/contact.Preferred_Cuisine__c'
 
 
 
 
-const data = [
-    /*{ id: 1, name: 'Chipotle', cuisine: 'Fast Food', price: '$', rating: 4.0, phone: '212-575-8424' },
-    { id: 2, name: 'Chick-fil-A', cuisine: 'Fast Food', price: '$', rating: 5.0, phone: '718-504-6528' },
-    { id: 3, name: 'Popeyes', cuisine: 'Fast Food', price: '$', rating: 4.5, phone: '917-475-1546' },
-    { id: 4, name: 'Starbucks', cuisine: 'Dessert', price: '$', rating: 3.7, phone: '212-221-7515' },    
-    */
-];
 
 const columns = [
-    { label: 'Restaurant', fieldName: 'name' },
-    { label: 'Cuisine', fieldName: 'cuisine', type: 'string' },
+    { label: 'Restaurant', fieldName: 'Name' },
+    { label: 'Cuisine', fieldName: 'Cuisine_Type__c', type: 'string' },
     { label: 'Rating',
-      fieldName: 'rating',
+      fieldName: 'Rating__c',
       type: 'number',
       sortable: true,
       cellAttributes: { alignment: 'left' }, },    
-    { label: 'Price', fieldName: 'price', type: 'string', sortable: true, cellAttributes: { alignment: 'left'  },  },      
-    { label: 'Phone', fieldName: 'phone', type: 'string' },
+    { label: 'Price', fieldName: 'Price__c', type: 'string', sortable: true, cellAttributes: { alignment: 'left'  },  },      
+    { label: 'Phone', fieldName: 'Phone_Number__c', type: 'string' },
 ];
 
-export default class myModal extends LightningElement {
+export default class myRestaurantShenanigans extends LightningElement {
 
-    firstName;
-    lastName;
+    
+    data = [];
+    
+    
+    
+    @api recordId; 
+    girlfriendName;
     name;
-            //placeholder
-    cuisine = 'Thai';
+            
+    
+    cuisine;
+    //placeholder = 'Thai';
+    @api preferredCuisine;
     price;
     rating;
     phone;
-    @api valueFromParentComponent;
-    restaurantData = data;
+    @api valueFromParentComponent;   
+    
     columns = columns;
     defaultSortDirection = 'asc';
     sortDirection = 'asc';
     sortedBy;
+    error;
+  
+    // @wire(getRecords, {
+    //     records: [
+    //         {
+    //           recordIds: ['003Dn00000G2tiOIAR'],
+    //           fields: [NAME_FIELD, PREFERRED_CUISINE_FIELD]            
+    //         },
+    //         {
+    //           recordIds: ['003Dn00000G2tiNIAR'],
+    //           fields: [NAME_FIELD, PREFERRED_CUISINE_FIELD]
+    //         },
+    //         {
+    //           recordIds: ['003Dn00000G3Zm7IAF'],
+    //           fields: [NAME_FIELD, PREFERRED_CUISINE_FIELD]
+    //         },
+    //     ]
+    // }) wiredRecords;
+
+
+    sortBy(field, reverse, primer) {
+      const key = primer
+          ? function (x) {
+                return primer(x[field]);
+            }
+          : function (x) {
+                return x[field];
+            };
+
+      return function (a, b) {
+          a = key(a);
+          b = key(b);
+          return reverse * ((a > b) - (b > a));
+      };
+  }
+
+    onHandleSort(event) {
+      const { fieldName: sortedBy, sortDirection } = event.detail;
+      const cloneData = [...this.data];
+
+      cloneData.sort(this.sortBy(sortedBy, sortDirection === 'asc' ? 1 : -1));
+      this.data = cloneData;
+      this.sortDirection = sortDirection;
+      this.sortedBy = sortedBy;
+  }
+    
 
 
     handleOptionChange(event) {
@@ -66,100 +109,96 @@ export default class myModal extends LightningElement {
     customFormModal = false;
 
     options = [ 
-        {label: 'Tori Tong', value: 'option1'},
-        {label: 'Riana Chen', value: 'option2'},
-        {label: '#foreveralone', value: 'option3'}
+        {label: 'Tori Tang', value: 'Tori Tang'},
+        {label: 'Riana Chen', value: 'Riana Chen'},
+        {label: '#foreveralone', value: 'Forever Alone'}
     ];
-    selectedOption = '';
+    selectedOption = 'girlfriendName';
+    
 
     customShowModalPopup() {
         this.customFormModal = true;
     }
 
-    customHideModalPopup() {
-
+    girlfriendAndGo() {
+               
         this.customFormModal = false;
+        let preferredCuisine;
         selectYourGirlfriend({
 
-            girlfriendFirstName : this.FirstName,
-            girlfriendLastName : this.LastName
-        })
-    }
-    //sort the numerical fields
-    sortBy(field, reverse, primer) {
-        const key = primer
-            ? function (x) {
-                  return primer(x[field]);
-              }
-            : function (x) {
-                  return x[field];
-              };
-
-        return function (a, b) {
-            a = key(a);
-            b = key(b);
-            return reverse * ((a > b) - (b > a));
-        };
-    }
-
-    onHandleSort(event) {
-        const { fieldName: sortedBy, sortDirection } = event.detail;
-        const cloneData = [...this.data];
-
-        cloneData.sort(this.sortBy(sortedBy, sortDirection === 'asc' ? 1 : -1));
-        this.data = cloneData;
-        this.sortDirection = sortDirection;
-        this.sortedBy = sortedBy;
-    }
-
+            
+            girlfriendName : this.selectedOption
+            
+        })            
+          .then((result) => {            
+            console.log('Result', result);
+            this.preferredCuisine = result;                       
+            //refreshApex();
+            //thisisstillresult
+            console.log(this.preferredCuisine)
+        //     findRestaurants(preferredCuisine)
+            // .then((data) => {
+            //   this.data = data;})
+        //     })
+        // })
+        // .catch(error => {            
+        //   console.error('Error in findRestaurants', error);
+        })      
+      .catch((error) => {            
+          console.error('Error in selectYourGirlfriend', error);
+      });
+    };
+    
+    
+    
+    @wire(selectYourGirlfriend)
+    wiredGirlfriend({error, preferredCuisine}) {
+        if (preferredCuisine) {
+          // this.preferredCuisine = preferredCuisine 
+          this.preferredCuisine = data.preferredCuisine
+          console.log('wired', result);
+          console.log('wired', this.preferredCuisine);         
+          } else if (error) {
+            this.error = error;
+          //this.data = [];
+            } else {
+              console.log('this didnt work');
+        }
+      };  
+ 
+    
     
 
-
-    clickForMoreRestaurants() {
-        findRestaurants({ preferredCuisine: this.cuisine })
-            .then((result) => {
-                this.data = result;
-            })
-            .catch((error) => {
-                // Handle any errors
-            });
-    }
-   
-    wiredData({ error, restaurantData }) {
-    if (restaurantData) {
-        this.data = restaurantData;
-    } else if (error) {
-        // Handle error
-    }
-    };
-
-    addRow() {
-        this.restaurantData.push({
-            name: this.name,
-             cuisine: this.cuisine,
-             price: this.price,
-             rating: this.rating,
-             phone: this.phone
-        });
-    console.log(this.restaurantData)}    
-    // var table = $('#restaurantTable').DataTable();
-    // if (this.name && this.cuisine && this.price && this.rating && this.phone) {
-    // var newRow = {
-    //     name: this.name,
-    //     cuisine: this.cuisine,
-    //     price: this.price,
-    //     rating: this.rating,
-    //     phone: this.phone
-    // };
-    // if (table) {
-    //     table.row.add(newRow).draw();
-    // } else {
-    //     console.log("Error: DataTable is not defined or initialized.");
+    // clickForMoreRestaurants() {        
+    //     console.log(this.preferredCuisine);      
+    //     console.log('anything?');
+    //     findRestaurants({ preferredCuisine : this.preferredCuisine})
+    //         .then((result) => {
+    //             this.data = result;
+    //             console.log(this.data);                                            
+    //         })
+    //         .catch((error) => {                
+    //         });
     // }
-    // } else {
-    // console.log("Error: One or more required values are missing.");
-    // }            
-      
-    }
 
-
+    
+    
+    //@wire(findRestaurants)
+    @wire(findRestaurants, { preferredCuisine: '$preferredCuisine' })
+    wiredRetaurants({error, data}) {
+      console.log(data);
+      if (data) {
+        this.data = data;
+        this.error = undefined;
+        } else if (error) {
+          this.error = error;
+          this.data = [];
+          } else {
+          this.data = [];
+          }
+    };
+ 
+    
+    
+    
+}
