@@ -1,13 +1,10 @@
 import { LightningElement, api, wire } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import findRestaurants from '@salesforce/apex/RestaurantRecs.findRestaurants';
-import RESTAURANT_OBJECT from '@salesforce/schema/Restaurant__c';
 import { refreshApex } from '@salesforce/apex';
 import LightningModal from 'lightning/modal';
 import selectYourGirlfriend from '@salesforce/apex/RestaurantRecs.selectYourGirlfriend';
-import { getRecords } from 'lightning/uiRecordApi';
-import NAME_FIELD from '@salesforce/schema/Contact.Name';
-import PREFERRED_CUISINE_FIELD from '@salesforce/schema/contact.Preferred_Cuisine__c'
+
 
 
 
@@ -83,7 +80,7 @@ export default class myRestaurantShenanigans extends LightningElement {
           b = key(b);
           return reverse * ((a > b) - (b > a));
       };
-  }
+    }
 
     onHandleSort(event) {
       const { fieldName: sortedBy, sortDirection } = event.detail;
@@ -93,7 +90,7 @@ export default class myRestaurantShenanigans extends LightningElement {
       this.data = cloneData;
       this.sortDirection = sortDirection;
       this.sortedBy = sortedBy;
-  }
+    }
     
 
 
