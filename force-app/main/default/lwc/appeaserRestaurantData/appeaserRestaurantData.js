@@ -4,10 +4,6 @@ import findRestaurants from '@salesforce/apex/appeaserRestaurantDataController.f
 import selectYourGirlfriend from '@salesforce/apex/appeaserRestaurantDataController.selectYourGirlfriend';
 
 
-
-
-
-
 const columns = [
     { label: 'Restaurant', fieldName: 'Name' },
     { label: 'Cuisine', fieldName: 'Cuisine_Type__c', type: 'string' },

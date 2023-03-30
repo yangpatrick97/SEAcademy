@@ -1,22 +1,42 @@
-<template>
-    <lightning-card>
-      <div 
-      class="slds-text-heading_large slds-align_absolute-center slds-text-color_destructive" style="height:5rem" >        
-         Girlfriend APPeaser
-     </div>
-     <c-appeaser-carousel></c-appeaser-carousel>
-     <c-appeaser-movies></c-appeaser-movies>
-     <c-appeaser-restaurant-data></c-appeaser-restaurant-data>
-               <lightning-layout multiple-rows="true">
-                   <lightning-layout-item padding="around-small" size="4">
-                           <c-appeaser-notes></c-appeaser-notes>
-                   </lightning-layout-item>
-                   <lightning-layout-item padding="around-small" size="5">
-                         <c-appeaser-reminder></c-appeaser-reminder>
-                   </lightning-layout-item>
-                   <lightning-layout-item padding="around-small" size="3">
-                         <c-appeaser-compliment></c-appeaser-compliment>
-                   </lightning-layout-item>
-               </lightning-layout>
-   </lightning-card>
+<template>   
+    <div class="slds-p-around_medium">
+
+        <lightning-button variant="brand" 
+                          label="Select Your Girlfriend" 
+                          title="Choose carefully" 
+                          onclick={customShowModalPopup} 
+                          class="slds-m-left_x-small"></lightning-button>
+    </div>
+
+    <template if:true={customFormModal}>
+        <div class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Choose Wisely</h2>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-combobox label="Select an option" value={selectedOption} options={options} onchange={handleOptionChange}></lightning-combobox>
+                </div>
+                <div class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={girlfriendAndGo}>Go forth and console</button>
+                </div>
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <div class="slds-p-around_medium">
+    <div id="restaurantTable">
+    <lightning-datatable
+            key-field="id"
+            columns={columns}
+            data={data}
+            hide-checkbox-column
+            default-sort-direction={defaultSortDirection}
+            sorted-direction={sortDirection}
+            sorted-by={sortedBy}
+            onsort={onHandleSort}>
+    </lightning-datatable>    
+    </div>
+    </div>
 </template>
