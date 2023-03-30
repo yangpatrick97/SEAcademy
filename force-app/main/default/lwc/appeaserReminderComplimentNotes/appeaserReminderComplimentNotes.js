@@ -58,7 +58,7 @@ export default class AppeaserReminderComplimentNotes extends LightningElement {
         console.log(this.randomImage);
       }
 
-      randomcomp() {
+      randomCompliment() {
         this.setRandomText();
         this.setRandomPic();
         

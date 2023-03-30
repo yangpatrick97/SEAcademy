@@ -1,31 +1,18 @@
 <template>
-    <lightning-card>
-      <div class="slds-text-heading_large slds-align_absolute-center slds-text-color_destructive" style="height:5rem" >        
-         Girlfriend APPeaser
-     </div>
+    <lightning-card title='Girlfriend APPeaser'>
       <c-appeaser-carousel></c-appeaser-carousel>
       <c-appeaser-movies></c-appeaser-movies>
       <c-appeaser-restaurant-data></c-appeaser-restaurant-data>
-        <lightning-layout multiple-rows="true">
-            <lightning-layout-item padding="around-small" size="12">
-                <lightning-layout>
-                    <lightning-layout-item padding="around-small" size="4">
-                        <div class="page-section page-right">
-                            <c-appeaser-notes></c-appeaser-notes>
-                        </div>
-                    </lightning-layout-item>
-                    <lightning-layout-item padding="around-small" size="5">
-                        <div class="page-section page-main">
-                          <c-appeaser-reminder></c-appeaser-reminder>
-                        </div>
-                    </lightning-layout-item>
-                    <lightning-layout-item padding="around-small" size="3">
-                        <div class="page-section page-right">
-                          <c-appeaser-compliment></c-appeaser-compliment>
-                        </div>
-                    </lightning-layout-item>
-                </lightning-layout>
+      <lightning-layout multiple-rows="true">
+            <lightning-layout-item padding="around-small" size="4">
+                  <c-appeaser-notes></c-appeaser-notes>
             </lightning-layout-item>
-        </lightning-layout>
+            <lightning-layout-item padding="around-small" size="5">
+                  <c-appeaser-reminder></c-appeaser-reminder>
+            </lightning-layout-item>
+            <lightning-layout-item padding="around-small" size="3">
+                  <c-appeaser-compliment></c-appeaser-compliment>
+            </lightning-layout-item>
+      </lightning-layout>
     </lightning-card>
  </template>

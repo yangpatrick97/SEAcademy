@@ -1,79 +1,86 @@
 import { LightningElement, api, wire, track } from 'lwc';
-import getTaskData from '@salesforce/apex/reminderController.getTaskData';
+import getReminderData from '@salesforce/apex/reminderController.getReminderData';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import { deleteRecord } from 'lightning/uiRecordApi';
 import { refreshApex } from '@salesforce/apex';
 
 const columns = [
-    { label: 'Subject', fieldName: 'Name' },
-    { label: 'Due Date', fieldName: 'EndDate', type: 'date' },
+   { label: 'Subject', fieldName: 'Subject__c', hideDefaultActions: 'true' },
+   { label: 'Due Date', fieldName: 'Due_Date__c', hideDefaultActions: 'true', type: 'date'}
 ];
 
 export default class AppeaserReminder extends LightningElement {
-    @api valueFromParentComponent;
-
-    data = [];
+    reminderData = [];
     columns = columns;
-    //Wire Apex class that retrieves Campaign data, and updates data table
-    @wire(getTaskData)
-    wiredTasks({ error, data }) {
-        if (data) {
-            let fixeddata = [];
-            data.forEach((row) => {
-                let dataline = {};
-                dataline.Name = row.Name;
-                dataline.EndDate = row.EndDate;
-                dataline.recordId = row.Id;
 
-                fixeddata.push(dataline);
-                console.log(fixeddata);
-            })
-            this.data = fixeddata;
+    //Wire method that reand refresh apex
+    wiredReminderData;
+    error;
+
+    //Opening and Closing Modal
+    modalPopUp = false;
+
+    //Handling selected rows. Delete button will only show when reminderSelectedRows > 0
+    reminderSelectedRows = [];
+    get showDeleteButton() {
+        return (this.reminderSelectedRows.length > 0);
+    }
+
+    //Wire Apex class that retrieves Reminder__c data, and updates data table
+    @wire(getReminderData)
+    wiredReminders(response) {
+        this.wiredReminderData = response;
+        if (response.data) {
+            this.reminderData = response.data;
             this.error = undefined;
 
-        } else if (error) {
-            this.error = error;
-            this.contacts = undefined;
+        } else if (response.error) {
+            this.error = response.error;
+            reminderData = undefined;
+            console.log(this.error);
         }
     }
-    //Opening and Closing Modal
-    customFormModal = false;
 
-    customShowModalPopup() {            
-        this.customFormModal = true;
+    showModalPopUp() {           
+        this.modalPopUp = true;
     }
 
-    customHideModalPopup() {    
-        this.customFormModal = false;
+    hideModalPopUp() {   
+        this.modalPopUp = false;
     }
-  
-    //pushing tasks/campaigns to salesforce 
+    //pushing reminders to salesforce via lightning record edit form
     handleSave() {
-        this.handleRecordSave();
+        this.template.querySelector('lightning-record-edit-form').submit(this.fields);
     }
 
-    handleRecordSave() {
-        this.template.querySelector('lightning-record-edit-form').submit(this.fields);
-        this.customHideModalPopup();
+    handleSuccess() {
+        this.hideModalPopUp();
         this.dispatchEvent(
             new ShowToastEvent({
             title: 'Success',
             message: 'Reminder is Saved!',
             variant: 'success'
-            }))
-            //NEED TO FIGURE OUT REFRESHAPEX
+            }));
+        return refreshApex(this.wiredReminderData);
     }
-
-    //Deleting selected reminders
-    reminderSelectedRows = [];
 
     handleRowSelection(event) {
         this.reminderSelectedRows = event.detail.selectedRows;
     }
- 
+
     handleDelete() {
         this.reminderSelectedRows.map(reminder => {
-            deleteRecord(reminder.recordId);
+            deleteRecord(reminder.Id)
+        .then(result => {
+            console.log(result);
+            this.dispatchEvent(
+                new ShowToastEvent({
+                title: 'Success',
+                message: 'Reminder Deleted!',
+                variant: 'success'
+            }))
+            return refreshApex(this.wiredReminderData);
+            })
         });
     }
 }

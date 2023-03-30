@@ -1,10 +1,23 @@
 <template>
-    <lightning-card>
-        <div class="slds-p-around_medium lgc-bg">
-            <h2 class="slds-text-heading_medium slds-m-bottom_small">
-                Girlfriend 101
-                </h2>
-            <lightning-textarea name="input3" placeholder="type here..."></lightning-textarea>
+    <lightning-card title="Girlfriend 101">
+        <div class="slds-p-left_medium">
+            <template if:false={showEditForm}>
+                <lightning-formatted-rich-text
+                    value={existingNotes}>
+                </lightning-formatted-rich-text>
+                <div class="slds-float_right slds-p-around_small"> 
+                    <lightning-button label="Edit" variant="brand" type="submit" onclick={handleEditButtonClick}></lightning-button>
+                </div>
+            </template>
+            <template if:true={showEditForm}>
+                <lightning-record-edit-form object-api-name="Notepad__c" record-id="a03Dn0000050vbGIAQ" onsuccess={handleSuccess}>
+                    <lightning-messages></lightning-messages>
+                    <lightning-input-field field-name="Notes__c"> </lightning-input-field>
+                </lightning-record-edit-form> 
+                <div class="slds-float_right"> 
+                    <lightning-button label="Save" variant="neutral" onclick={handleSave}></lightning-button>
+                </div>
+            </template>
         </div>
     </lightning-card>
 </template>

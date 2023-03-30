@@ -1,14 +1,14 @@
 public with sharing class reminderController {
 
         @AuraEnabled(cacheable=true)
-        public static List<Campaign> getTaskData() {
+        public static List<Reminder__c> getReminderData() {
             try { 
                 return [
-                    SELECT Name, EndDate, Id
-                    FROM Campaign
+                    SELECT Subject__c, Due_Date__c, Id
+                    FROM Reminder__c
                 ];
-            } catch (Exception e) {
-                throw new AuraHandledException(e.getMessage());
+            } catch (Exception error) {
+                throw new AuraHandledException(error.getMessage());
             }
         }
     }
