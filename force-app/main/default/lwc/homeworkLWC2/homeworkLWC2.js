@@ -57,7 +57,7 @@ export default class homeworkLWC2 extends LightningElement {
         var chosenpicture = pictures[randomnumber];
         pics.src = chosenpicture;
       }
-      randomcomp() {
+      randomCompliment() {
         f2();
         f1();
       }

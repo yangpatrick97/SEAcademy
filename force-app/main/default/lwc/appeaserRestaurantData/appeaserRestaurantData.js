@@ -5,11 +5,6 @@ import { refreshApex } from '@salesforce/apex';
 import LightningModal from 'lightning/modal';
 import selectYourGirlfriend from '@salesforce/apex/RestaurantRecs.selectYourGirlfriend';
 
-
-
-
-
-
 const columns = [
     { label: 'Restaurant', fieldName: 'Name' },
     { label: 'Cuisine', fieldName: 'Cuisine_Type__c', type: 'string' },
@@ -23,9 +18,6 @@ const columns = [
 ];
 
 export default class myRestaurantShenanigans extends LightningElement {
-
-    
-    data = [];
     
     
     
@@ -47,7 +39,7 @@ export default class myRestaurantShenanigans extends LightningElement {
     sortDirection = 'asc';
     sortedBy;
     error;
-  
+
     // @wire(getRecords, {
     //     records: [
     //         {
@@ -111,17 +103,18 @@ export default class myRestaurantShenanigans extends LightningElement {
         {label: '#foreveralone', value: 'Forever Alone'}
     ];
     selectedOption = 'girlfriendName';
-    
 
     customShowModalPopup() {
         this.customFormModal = true;
     }
 
+
     girlfriendAndGo() {
-               
+           
         this.customFormModal = false;
         let preferredCuisine;
         selectYourGirlfriend({
+
 
             
             girlfriendName : this.selectedOption

@@ -1,7 +1,9 @@
 public with sharing class RestaurantRecs {
 //appeaserRestaurantDataController
    @AuraEnabled(cacheable=true)
+
     public static List<Restaurant__c> findRestaurants(String preferredCuisine){     
+
         try {List<Restaurant__c> myRestaurants = new List<Restaurant__c>([
             SELECT Name, Cuisine_Type__c, Price__c, Rating__c, Phone_Number__c
             FROM Restaurant__c    
@@ -23,6 +25,7 @@ public with sharing class RestaurantRecs {
         Contact myGirlfriend = [SELECT name, preferred_Cuisine__c
                                 FROM Contact
                                 WHERE ((name = :girlfriendName))];
+
         System.debug(girlfriendName);        
         System.debug(myGirlfriend);
         String preferredCuisine = myGirlfriend.preferred_Cuisine__c;
