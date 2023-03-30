@@ -18,7 +18,7 @@
                     <lightning-combobox label="Select an option" value={selectedOption} options={options} onchange={handleOptionChange}></lightning-combobox>
                 </div>
                 <div class="slds-modal__footer">
-                    <button class="slds-button slds-button_neutral" onclick={girlfriendAndGo}>Go forth and console</button>
+                    <button class="slds-button slds-button_neutral" onclick={girlfriendCloseModal}>Go forth and console</button>
                 </div>
             </div>
         </div>
@@ -36,11 +36,7 @@
             sorted-direction={sortDirection}
             sorted-by={sortedBy}
             onsort={onHandleSort}>
-    </lightning-datatable>
-    <!-- <div class="slds-m-top_small slds-m-bottom_medium">
-        <lightning-button variant="brand" label="Find Restaurants" title="GOGOGO" onclick={clickForMoreRestaurants} class="slds-m-left_x-small">         
-        </lightning-button>        
-    </div> -->
+    </lightning-datatable>    
     </div>
     </div>
 </template>
