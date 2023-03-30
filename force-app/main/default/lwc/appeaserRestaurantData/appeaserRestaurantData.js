@@ -1,13 +1,8 @@
 import { LightningElement, api, wire } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
-import findRestaurants from '@salesforce/apex/RestaurantRecs.findRestaurants';
-import RESTAURANT_OBJECT from '@salesforce/schema/Restaurant__c';
-import { refreshApex } from '@salesforce/apex';
-import LightningModal from 'lightning/modal';
-import selectYourGirlfriend from '@salesforce/apex/RestaurantRecs.selectYourGirlfriend';
-import { getRecords } from 'lightning/uiRecordApi';
-import NAME_FIELD from '@salesforce/schema/Contact.Name';
-import PREFERRED_CUISINE_FIELD from '@salesforce/schema/contact.Preferred_Cuisine__c'
+import findRestaurants from '@salesforce/apex/appeaserRestaurantDataController.findRestaurants';
+import selectYourGirlfriend from '@salesforce/apex/appeaserRestaurantDataController.selectYourGirlfriend';
+
 
 
 
@@ -83,7 +78,7 @@ export default class myRestaurantShenanigans extends LightningElement {
           b = key(b);
           return reverse * ((a > b) - (b > a));
       };
-  }
+    }
 
     onHandleSort(event) {
       const { fieldName: sortedBy, sortDirection } = event.detail;
@@ -93,7 +88,7 @@ export default class myRestaurantShenanigans extends LightningElement {
       this.data = cloneData;
       this.sortDirection = sortDirection;
       this.sortedBy = sortedBy;
-  }
+    }
     
 
 
@@ -111,6 +106,8 @@ export default class myRestaurantShenanigans extends LightningElement {
     options = [ 
         {label: 'Tori Tang', value: 'Tori Tang'},
         {label: 'Riana Chen', value: 'Riana Chen'},
+        {label: 'One and Done', value: 'Tinder Date'},
+        {label: 'Looking to Impress', value: 'Gold Digger'},
         {label: '#foreveralone', value: 'Forever Alone'}
     ];
     selectedOption = 'girlfriendName';
@@ -120,7 +117,7 @@ export default class myRestaurantShenanigans extends LightningElement {
         this.customFormModal = true;
     }
 
-    girlfriendAndGo() {
+    girlfriendCloseModal() {
                
         this.customFormModal = false;
         let preferredCuisine;
@@ -133,16 +130,9 @@ export default class myRestaurantShenanigans extends LightningElement {
           .then((result) => {            
             console.log('Result', result);
             this.preferredCuisine = result;                       
-            //refreshApex();
-            //thisisstillresult
+            
             console.log(this.preferredCuisine)
-        //     findRestaurants(preferredCuisine)
-            // .then((data) => {
-            //   this.data = data;})
-        //     })
-        // })
-        // .catch(error => {            
-        //   console.error('Error in findRestaurants', error);
+        
         })      
       .catch((error) => {            
           console.error('Error in selectYourGirlfriend', error);
@@ -154,36 +144,21 @@ export default class myRestaurantShenanigans extends LightningElement {
     @wire(selectYourGirlfriend)
     wiredGirlfriend({error, preferredCuisine}) {
         if (preferredCuisine) {
-          // this.preferredCuisine = preferredCuisine 
+          
           this.preferredCuisine = data.preferredCuisine
           console.log('wired', result);
           console.log('wired', this.preferredCuisine);         
           } else if (error) {
             this.error = error;
-          //this.data = [];
+         
             } else {
               console.log('this didnt work');
         }
       };  
  
-    
-    
+     
 
-    // clickForMoreRestaurants() {        
-    //     console.log(this.preferredCuisine);      
-    //     console.log('anything?');
-    //     findRestaurants({ preferredCuisine : this.preferredCuisine})
-    //         .then((result) => {
-    //             this.data = result;
-    //             console.log(this.data);                                            
-    //         })
-    //         .catch((error) => {                
-    //         });
-    // }
-
-    
-    
-    //@wire(findRestaurants)
+   
     @wire(findRestaurants, { preferredCuisine: '$preferredCuisine' })
     wiredRetaurants({error, data}) {
       console.log(data);
