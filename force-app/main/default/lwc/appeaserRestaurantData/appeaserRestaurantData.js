@@ -5,54 +5,55 @@ import RESTAURANT_OBJECT from '@salesforce/schema/Restaurant__c';
 import { refreshApex } from '@salesforce/apex';
 import LightningModal from 'lightning/modal';
 import selectYourGirlfriend from '@salesforce/apex/RestaurantRecs.selectYourGirlfriend';
-
-import NAME_FIELD from '@salesforce/schema/Restaurant__c.Name';
-import CUISINE_FIELD from '@salesforce/schema/Restaurant__c.Cuisine_Type__c';
-import PRICE_FIELD from '@salesforce/schema/Restaurant__c.Price__c';
-import RATING_FIELD from '@salesforce/schema/Restaurant__c.Rating__c';
-import PHONE_FIELD from '@salesforce/schema/Restaurant__c.Phone_Number__c';
+import NAME_FIELD from '@salesforce/schema/Contact.Name';
 import PREFERRED_CUISINE_FIELD from '@salesforce/schema/Contact.Preferred_Cuisine__c'
 
 
 
 
-const data = [
-    /*{ id: 1, name: 'Chipotle', cuisine: 'Fast Food', price: '$', rating: 4.0, phone: '212-575-8424' },
-    { id: 2, name: 'Chick-fil-A', cuisine: 'Fast Food', price: '$', rating: 5.0, phone: '718-504-6528' },
-    { id: 3, name: 'Popeyes', cuisine: 'Fast Food', price: '$', rating: 4.5, phone: '917-475-1546' },
-    { id: 4, name: 'Starbucks', cuisine: 'Dessert', price: '$', rating: 3.7, phone: '212-221-7515' },    
-    */
-];
 
 const columns = [
-    { label: 'Restaurant', fieldName: 'name' },
-    { label: 'Cuisine', fieldName: 'cuisine', type: 'string' },
+    { label: 'Restaurant', fieldName: 'Name' },
+    { label: 'Cuisine', fieldName: 'Cuisine_Type__c', type: 'string' },
     { label: 'Rating',
-      fieldName: 'rating',
+      fieldName: 'Rating__c',
       type: 'number',
       sortable: true,
       cellAttributes: { alignment: 'left' }, },    
-    { label: 'Price', fieldName: 'price', type: 'string', sortable: true, cellAttributes: { alignment: 'left'  },  },      
-    { label: 'Phone', fieldName: 'phone', type: 'string' },
+    { label: 'Price', fieldName: 'Price__c', type: 'string', sortable: true, cellAttributes: { alignment: 'left'  },  },      
+    { label: 'Phone', fieldName: 'Phone_Number__c', type: 'string' },
 ];
 
 export default class myModal extends LightningElement {
 
-    firstName;
-    lastName;
+    
+    data = [
+        /*{ id: 1, name: 'Chipotle', cuisine: 'Fast Food', price: '$', rating: 4.0, phone: '212-575-8424' },
+        { id: 2, name: 'Chick-fil-A', cuisine: 'Fast Food', price: '$', rating: 5.0, phone: '718-504-6528' },
+        { id: 3, name: 'Popeyes', cuisine: 'Fast Food', price: '$', rating: 4.5, phone: '917-475-1546' },
+        { id: 4, name: 'Starbucks', cuisine: 'Dessert', price: '$', rating: 3.7, phone: '212-221-7515' },    
+        */
+    ];
+    
+    
+    
+    @api recordId; 
+    girlfriendName;
     name;
-            //placeholder
-    cuisine = 'Thai';
+            
+    // cuisine = 'Thai';
+    cuisine;
     price;
     rating;
     phone;
-    @api valueFromParentComponent;
-    restaurantData = data;
+    @api valueFromParentComponent;   
+    
     columns = columns;
     defaultSortDirection = 'asc';
     sortDirection = 'asc';
     sortedBy;
-
+    error;
+  
 
     handleOptionChange(event) {
         this.selectedOption = event.detail.value;
@@ -65,12 +66,12 @@ export default class myModal extends LightningElement {
    
     customFormModal = false;
 
-    options = [ 
-        {label: 'Tori Tong', value: 'option1'},
+    options = [ //labels are one single string hmm
+        {label: 'Tori Tang', value: 'option1'},
         {label: 'Riana Chen', value: 'option2'},
         {label: '#foreveralone', value: 'option3'}
     ];
-    selectedOption = '';
+    selectedOption = 'girlfriendName';
 
     customShowModalPopup() {
         this.customFormModal = true;
@@ -78,13 +79,38 @@ export default class myModal extends LightningElement {
 
     customHideModalPopup() {
 
+        console.log(this.girlfriendName);        
         this.customFormModal = false;
         selectYourGirlfriend({
 
-            girlfriendFirstName : this.FirstName,
-            girlfriendLastName : this.LastName
+            girlfriendName : this.girlfriendName
+            
+        })            
+        .then((result) =>{
+            console.log('Result', result);
+            this.girlFriendName = result.girlfriendName;           
+            console.log(this.girlfriendName);
+            refreshApex();
         })
-    }
+        .catch(error =>{            
+
+        })
+        };
+       
+    
+    @wire(selectYourGirlfriend)
+    wiredGirlfriend({error, girlfriendName}) {
+        if (girlfriendName) {
+          this.girlfriendName = girlfriendName          
+        } else if (error) {
+          this.error = error;
+          this.data = [];
+        } else {
+            console.log(this.girlfriendName);
+        }
+      };
+    
+    
     //sort the numerical fields
     sortBy(field, reverse, primer) {
         const key = primer
@@ -113,51 +139,34 @@ export default class myModal extends LightningElement {
     }
 
     
-
+    
 
     clickForMoreRestaurants() {
         findRestaurants({ preferredCuisine: this.cuisine })
             .then((result) => {
                 this.data = result;
+                console.log(this.data);                                            
             })
-            .catch((error) => {
-                // Handle any errors
+            .catch((error) => {                
             });
     }
-   
-    wiredData({ error, restaurantData }) {
-    if (restaurantData) {
-        this.data = restaurantData;
-    } else if (error) {
-        // Handle error
-    }
-    };
 
-    addRow() {
-        this.restaurantData.push({
-            name: this.name,
-             cuisine: this.cuisine,
-             price: this.price,
-             rating: this.rating,
-             phone: this.phone
-        });
-    console.log(this.restaurantData)}    
-    // var table = $('#restaurantTable').DataTable();
-    // if (this.name && this.cuisine && this.price && this.rating && this.phone) {
-    // var newRow = {
-    //     name: this.name,
-    //     cuisine: this.cuisine,
-    //     price: this.price,
-    //     rating: this.rating,
-    //     phone: this.phone
-    // };
-    // if (table) {
-    //     table.row.add(newRow).draw();
-    // } else {
-    //     console.log("Error: DataTable is not defined or initialized.");
-    // }
-    // } else {
-    // console.log("Error: One or more required values are missing.");
-    // }            
-      
-    }
+    
+    
+    @wire(findRestaurants)
+    wiredRetaurants({error, data}) {
+      if (data) {
+        this.data = data;
+        this.error = undefined;
+      } else if (error) {
+        this.error = error;
+        this.data = [];
+      } else {
+        this.data = [];
+      }
+    };
+ 
+    
+    
+    
+}

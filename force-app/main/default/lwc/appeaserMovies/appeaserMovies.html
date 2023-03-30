@@ -1,29 +1,30 @@
-<template>    
+<template>   
     <div class="slds-p-around_medium">
         <p class="slds-text-heading_medium">{activeSectionMessage}</p>
-        </div>
-        <div class="slds-p-around_medium">
-        <lightning-accordion class="example-accordion"
+ 
+ 
+        <lightning-accordion class="example-accordion slds-p-top_small"
                              onsectiontoggle={handleToggleSection}
                              active-section-name={activeSections}
-                             allow-multiple-sections-open>
-            <lightning-accordion-section name="Make your girl swoon" label="Cheesy Romance">               
+                             allow-multiple-sections-open=”true”
+ >
+            <lightning-accordion-section name=" Make your girl swoon" label="Cheesy Romance">              
                 <p>Titanic</p>
                 <p>The Notebook</p>
                 <p>Twilight</p>
                 <p>A Walk to Remember</p>
                 <p>The Fault in Our Stars</p>
             </lightning-accordion-section>
-    
-            <lightning-accordion-section name="BADUMP BADUMP" label="Thrilling Romance">
+   
+            <lightning-accordion-section name=" BADUMP BADUMP" label="Thrilling Romance">
                 <p>Die Hard</p>
                 <p>Fifty Shades of Grey</p>
                 <p>The Princess Bride</p>
                 <p>Speed</p>
                 <p></p>
             </lightning-accordion-section>
-    
-            <lightning-accordion-section name="When your girl wants a laugh" label="Comedic Romance">
+   
+            <lightning-accordion-section name=" When your girl wants a laugh" label="Comedic Romance">
                 <p>About Time</p>
                 <p>Pretty Woman</p>
                 <p>Miss Congeniality</p>
@@ -31,5 +32,5 @@
                 <p></p>
             </lightning-accordion-section>
         </lightning-accordion>
-        </div>      
-</template>
+        </div>     
+ </template>
