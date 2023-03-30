@@ -19,23 +19,16 @@ const columns = [
 export default class myRestaurantShenanigans extends LightningElement {
 
     
-    data = [];
-    
-    
-    
+    data = [];    
     @api recordId; 
     girlfriendName;
     name;
-            
-    
     cuisine;
-    //placeholder = 'Thai';
     @api preferredCuisine;
     price;
     rating;
     phone;
-    @api valueFromParentComponent;   
-    
+    @api valueFromParentComponent;       
     columns = columns;
     defaultSortDirection = 'asc';
     sortDirection = 'asc';
