@@ -1,19 +1,19 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement} from 'lwc';
 
 export default class AppeaserCompliment extends LightningElement {
   randomText = '';
   randomImage = '';
   sentence = [
-      "I Hope You Are Doing Well Today!",
-      "You're pretty cool B).",
-      "Oh My Goodness! You're Outfit's Lookin' Amazing!",
-      "Uwu",
-      "You should have your own talk show!",
-      "You Are Greatly Appreciated!",
-      "I Hope You Have A Great Week!",
-      "You have cute elbows",
-      "Even babies think you're cute!",
-      "I Hope Your Pillows Are Just The Way You Like Them When You Head To Bed."
+    "I Hope You Are Doing Well Today!",
+    "You're pretty cool B).",
+    "Oh My Goodness! You're Outfit's Lookin' Amazing!",
+    "Uwu",
+    "You should have your own talk show!",
+    "You Are Greatly Appreciated!",
+    "I Hope You Have A Great Week!",
+    "You have cute elbows",
+    "Even babies think you're cute!",
+    "I Hope Your Pillows Are Just The Way You Like Them When You Head To Bed."
     ];
   pictures = [
     "https://www.tcnorth.com/wp-content/uploads/2010/02/compliment-900x675.jpg",

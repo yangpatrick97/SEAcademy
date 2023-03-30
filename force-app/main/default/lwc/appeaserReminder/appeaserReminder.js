@@ -78,9 +78,9 @@ export default class AppeaserReminder extends LightningElement {
                 title: 'Success',
                 message: 'Reminder Deleted!',
                 variant: 'success'
-            }))
+            }));
             return refreshApex(this.wiredReminderData);
-            })
+            });
         });
     }
 }
