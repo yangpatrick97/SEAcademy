@@ -1,16 +1,9 @@
 import { LightningElement, api, wire } from 'lwc';
 import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 import findRestaurants from '@salesforce/apex/RestaurantRecs.findRestaurants';
-import RESTAURANT_OBJECT from '@salesforce/schema/Restaurant__c';
 import { refreshApex } from '@salesforce/apex';
 import LightningModal from 'lightning/modal';
 import selectYourGirlfriend from '@salesforce/apex/RestaurantRecs.selectYourGirlfriend';
-import NAME_FIELD from '@salesforce/schema/Contact.Name';
-import PREFERRED_CUISINE_FIELD from '@salesforce/schema/Contact.Preferred_Cuisine__c'
-
-
-
-
 
 const columns = [
     { label: 'Restaurant', fieldName: 'Name' },
@@ -24,16 +17,7 @@ const columns = [
     { label: 'Phone', fieldName: 'Phone_Number__c', type: 'string' },
 ];
 
-export default class myModal extends LightningElement {
-
-    
-    data = [
-        /*{ id: 1, name: 'Chipotle', cuisine: 'Fast Food', price: '$', rating: 4.0, phone: '212-575-8424' },
-        { id: 2, name: 'Chick-fil-A', cuisine: 'Fast Food', price: '$', rating: 5.0, phone: '718-504-6528' },
-        { id: 3, name: 'Popeyes', cuisine: 'Fast Food', price: '$', rating: 4.5, phone: '917-475-1546' },
-        { id: 4, name: 'Starbucks', cuisine: 'Dessert', price: '$', rating: 3.7, phone: '212-221-7515' },    
-        */
-    ];
+export default class myRestaurantShenanigans extends LightningElement {
     
     
     
@@ -41,8 +25,10 @@ export default class myModal extends LightningElement {
     girlfriendName;
     name;
             
-    // cuisine = 'Thai';
+    
     cuisine;
+    //placeholder = 'Thai';
+    @api preferredCuisine;
     price;
     rating;
     phone;
@@ -53,7 +39,52 @@ export default class myModal extends LightningElement {
     sortDirection = 'asc';
     sortedBy;
     error;
-  
+
+    // @wire(getRecords, {
+    //     records: [
+    //         {
+    //           recordIds: ['003Dn00000G2tiOIAR'],
+    //           fields: [NAME_FIELD, PREFERRED_CUISINE_FIELD]            
+    //         },
+    //         {
+    //           recordIds: ['003Dn00000G2tiNIAR'],
+    //           fields: [NAME_FIELD, PREFERRED_CUISINE_FIELD]
+    //         },
+    //         {
+    //           recordIds: ['003Dn00000G3Zm7IAF'],
+    //           fields: [NAME_FIELD, PREFERRED_CUISINE_FIELD]
+    //         },
+    //     ]
+    // }) wiredRecords;
+
+
+    sortBy(field, reverse, primer) {
+      const key = primer
+          ? function (x) {
+                return primer(x[field]);
+            }
+          : function (x) {
+                return x[field];
+            };
+
+      return function (a, b) {
+          a = key(a);
+          b = key(b);
+          return reverse * ((a > b) - (b > a));
+      };
+    }
+
+    onHandleSort(event) {
+      const { fieldName: sortedBy, sortDirection } = event.detail;
+      const cloneData = [...this.data];
+
+      cloneData.sort(this.sortBy(sortedBy, sortDirection === 'asc' ? 1 : -1));
+      this.data = cloneData;
+      this.sortDirection = sortDirection;
+      this.sortedBy = sortedBy;
+    }
+    
+
 
     handleOptionChange(event) {
         this.selectedOption = event.detail.value;
@@ -66,10 +97,10 @@ export default class myModal extends LightningElement {
    
     customFormModal = false;
 
-    options = [ //labels are one single string hmm
-        {label: 'Tori Tang', value: 'option1'},
-        {label: 'Riana Chen', value: 'option2'},
-        {label: '#foreveralone', value: 'option3'}
+    options = [ 
+        {label: 'Tori Tang', value: 'Tori Tang'},
+        {label: 'Riana Chen', value: 'Riana Chen'},
+        {label: '#foreveralone', value: 'Forever Alone'}
     ];
     selectedOption = 'girlfriendName';
 
@@ -77,93 +108,84 @@ export default class myModal extends LightningElement {
         this.customFormModal = true;
     }
 
-    customHideModalPopup() {
 
-        console.log(this.girlfriendName);        
+    girlfriendAndGo() {
+           
         this.customFormModal = false;
+        let preferredCuisine;
         selectYourGirlfriend({
 
-            girlfriendName : this.girlfriendName
+
+            
+            girlfriendName : this.selectedOption
             
         })            
-        .then((result) =>{
+          .then((result) => {            
             console.log('Result', result);
-            this.girlFriendName = result.girlfriendName;           
-            console.log(this.girlfriendName);
-            refreshApex();
-        })
-        .catch(error =>{            
-
-        })
-        };
-       
+            this.preferredCuisine = result;                       
+            //refreshApex();
+            //thisisstillresult
+            console.log(this.preferredCuisine)
+        //     findRestaurants(preferredCuisine)
+            // .then((data) => {
+            //   this.data = data;})
+        //     })
+        // })
+        // .catch(error => {            
+        //   console.error('Error in findRestaurants', error);
+        })      
+      .catch((error) => {            
+          console.error('Error in selectYourGirlfriend', error);
+      });
+    };
+    
+    
     
     @wire(selectYourGirlfriend)
-    wiredGirlfriend({error, girlfriendName}) {
-        if (girlfriendName) {
-          this.girlfriendName = girlfriendName          
-        } else if (error) {
-          this.error = error;
-          this.data = [];
-        } else {
-            console.log(this.girlfriendName);
+    wiredGirlfriend({error, preferredCuisine}) {
+        if (preferredCuisine) {
+          // this.preferredCuisine = preferredCuisine 
+          this.preferredCuisine = data.preferredCuisine
+          console.log('wired', result);
+          console.log('wired', this.preferredCuisine);         
+          } else if (error) {
+            this.error = error;
+          //this.data = [];
+            } else {
+              console.log('this didnt work');
         }
-      };
-    
-    
-    //sort the numerical fields
-    sortBy(field, reverse, primer) {
-        const key = primer
-            ? function (x) {
-                  return primer(x[field]);
-              }
-            : function (x) {
-                  return x[field];
-              };
-
-        return function (a, b) {
-            a = key(a);
-            b = key(b);
-            return reverse * ((a > b) - (b > a));
-        };
-    }
-
-    onHandleSort(event) {
-        const { fieldName: sortedBy, sortDirection } = event.detail;
-        const cloneData = [...this.data];
-
-        cloneData.sort(this.sortBy(sortedBy, sortDirection === 'asc' ? 1 : -1));
-        this.data = cloneData;
-        this.sortDirection = sortDirection;
-        this.sortedBy = sortedBy;
-    }
-
+      };  
+ 
     
     
 
-    clickForMoreRestaurants() {
-        findRestaurants({ preferredCuisine: this.cuisine })
-            .then((result) => {
-                this.data = result;
-                console.log(this.data);                                            
-            })
-            .catch((error) => {                
-            });
-    }
+    // clickForMoreRestaurants() {        
+    //     console.log(this.preferredCuisine);      
+    //     console.log('anything?');
+    //     findRestaurants({ preferredCuisine : this.preferredCuisine})
+    //         .then((result) => {
+    //             this.data = result;
+    //             console.log(this.data);                                            
+    //         })
+    //         .catch((error) => {                
+    //         });
+    // }
 
     
     
-    @wire(findRestaurants)
+    //@wire(findRestaurants)
+    @wire(findRestaurants, { preferredCuisine: '$preferredCuisine' })
     wiredRetaurants({error, data}) {
+      console.log(data);
       if (data) {
         this.data = data;
         this.error = undefined;
-      } else if (error) {
-        this.error = error;
-        this.data = [];
-      } else {
-        this.data = [];
-      }
+        } else if (error) {
+          this.error = error;
+          this.data = [];
+          } else {
+          this.data = [];
+          }
     };
  
     
