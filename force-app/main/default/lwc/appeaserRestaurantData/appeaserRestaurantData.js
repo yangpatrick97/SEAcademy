@@ -97,6 +97,9 @@ export default class myRestaurantShenanigans extends LightningElement {
         {label: 'Riana Chen', value: 'Riana Chen'},
         {label: 'One and Done', value: 'Tinder Date'},
         {label: 'Looking to Impress', value: 'Gold Digger'},
+        {label: 'Rita Kushner', value: 'Rita Kushner'},
+        {label: 'Felicia Li', value: 'Felicia Li'},
+        {label: 'Patrick Yang', value: 'Patrick Yang'},
         {label: '#foreveralone', value: 'Forever Alone'}
     ];
     selectedOption = 'girlfriendName';
